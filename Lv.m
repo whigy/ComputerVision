@@ -1,4 +1,4 @@
-function pixels = Lv(inpic, op, shape)
+function [pixels, Lx, Ly] = Lv(inpic, op, shape)
 
 if (nargin < 2)
     op = 'cdo';
