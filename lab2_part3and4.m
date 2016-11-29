@@ -207,9 +207,6 @@ for i = 1:length(scale)
 
     subplot(length(scale), 3, (i-1)*3+2)
     Lvvvpixels = Lvvvtilde(discgaussfft(house, scale(i)), 'same');
-    %Lvvpixels(Lvvvpixels >= 0) = NaN;
-    %Lvvpixels(abs(Lvvpixels) > 0.00001) = NaN;
-    %contour(Lvvvpixels);
     %A = Lvvpixels .* real(log(1 + Lvvpixels .* double(Lvvvpixels<0)));
     A = Lvvpixels .* real(log(1 + Lvvpixels));
     contour(A, [0 0]); 
