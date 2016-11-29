@@ -16,6 +16,9 @@
 
 %%
 function [linepar, acc] = houghline(curves, magnitude, nrho, ntheta, threshold, nlines, verbose)
+% verbose = 1 : plot edge
+% verbose = 2 : plot accumulater space
+
 % Check if input appear to be valid
 
 %%%initialize accumulator space%%%
@@ -45,7 +48,7 @@ while trypointer <= insize,
     x = curves(2, trypointer);
     y = curves(1, trypointer);
     % Check if valid point with respect to threshold]
-    % Optionally, keep value from magnitude image %%%%%%??????
+    % Optionally, keep value from magnitude image
     magn_xy = magnitude(round(x), round(y));
     if magn_xy < threshold
         trypointer = trypointer + 1;
@@ -60,14 +63,15 @@ while trypointer <= insize,
         % Compute index values in the accumulator space
         [rho, ind_rho] = min(abs(rho_coor - rho_true));
         % Update the accumulator
-        acc(ind_rho, ind_theta) = acc(ind_rho, ind_theta) + 1; %Update the accumulator by 1 every time
-        %%%%%%%%%%%%%%%%%%%%%%%Update the accumulator by propotional to the
-        %%%%%%%%%%%%%%%%%%%%%%%gradient magnitude
+        %acc(ind_rho, ind_theta) = acc(ind_rho, ind_theta) + 1; %%Update the accumulator by 1 every time
+        acc(ind_rho, ind_theta) = acc(ind_rho, ind_theta) + log(1 + magn_xy);%%Update by propotional to the gradient magnitude
     end
   end
 end
 
 % Extract local maxima from the accumulator
+%%%Optional: Smooth histogram before calculating local maxima
+acc = binsepsmoothiter(acc, 0.1, 5);
 [Pos, Value, Anms] = locmax8(acc);
 
 % Delimit the number of responses if necessary
@@ -102,8 +106,11 @@ for idx = 1 : maxline
 end
 
 % Overlay these curves on the gradient magnitude image
-overlaycurves(magnitude, outcurves);
-axis([1 size(magnitude, 1) 1 size(magnitude, 2)])
-
+if verbose ==1
+    overlaycurves(magnitude, outcurves);
+    axis([1 size(magnitude, 1) 1 size(magnitude, 2)])
+elseif verbose ==2
+    showgrey(acc);
+end
 % Return the output data
 %end

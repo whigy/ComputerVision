@@ -79,21 +79,23 @@ testimage1 = triangle128;
 smalltest1 = binsubsample(testimage1);
 testimage2 = houghtest256;
 smalltest2 = binsubsample(binsubsample(testimage2));
+tools = few256;
+house = godthem256;
 
 scale = 4;
 gradmagnthreshold = 4;
-nrho = 500;
-ntheta = 200;
-nlines =10;
+nrho = 400;
+ntheta = 400;
+nlines =15;
 
 figure(61)
-piclist = {'testimage1', 'smalltest1', 'testimage2', 'smalltest2'};
+piclist = {'testimage1', 'smalltest1', 'tools', 'testimage2', 'smalltest2', 'house'};
 for i = 1: length(piclist)
 %     if i == 1 || i ==3
 %         continue
 %     end
-    subplot(2, 2, i)
+    subplot(2, 3, i)
     pic = eval(piclist{i});
-    [linepar acc] = houghedgeline(pic, scale, gradmagnthreshold, nrho, ntheta, nlines);
+    [linepar acc] = houghedgeline(pic, scale, gradmagnthreshold, nrho, ntheta, nlines, 2);
 end
 
