@@ -1,3 +1,4 @@
+%% For deugging
 % clc
 % clear
 % 
@@ -14,25 +15,32 @@
 % curves = extractedge(pic, scale, gradmagnthreshold, 'same');
 % magnitude = Lv(pic);
 
-%%
+%% Function start
 function [linepar, acc] = houghline(curves, magnitude, nrho, ntheta, threshold, nlines, verbose)
 % verbose = 1 : plot edge
 % verbose = 2 : plot accumulater space
 
 % Check if input appear to be valid
+% -Ok, not checking XD
 
-%%%initialize accumulator space%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %initialize accumulator space%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
 % Allocate accumulator space
 acc = zeros(nrho, ntheta);
 
 % Define a coordinate system in the accumulator space
- % theta: [-180, 180]
- % rho: according to the distance to the center of image?
+ % theta: [-90, 90]
+ % rho: [-diag, diag]
 maxrho = sqrt(size(magnitude, 1)^2 + size(magnitude, 2)^2);
 rho_coor = linspace(-maxrho, maxrho, nrho);
 theta_coor = linspace(-pi/2, pi/2, ntheta);
+rho_coor = linspace(-maxrho, maxrho, nrho);
+theta_coor = linspace(-pi/2, pi/2, ntheta);
 
-%%% %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     %%% Increment in accumulator space %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   
 % Loop over all the input curves (cf. pixelplotcurves)
 insize = size(curves, 2);
 trypointer = 1;
@@ -65,13 +73,18 @@ while trypointer <= insize,
         % Update the accumulator
         %acc(ind_rho, ind_theta) = acc(ind_rho, ind_theta) + 1; %%Update the accumulator by 1 every time
         acc(ind_rho, ind_theta) = acc(ind_rho, ind_theta) + log(1 + magn_xy);%%Update by propotional to the gradient magnitude
+        %acc(ind_rho, ind_theta) = acc(ind_rho, ind_theta) + magn_xy;
     end
   end
 end
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     %%% Find lines by local maxima %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Extract local maxima from the accumulator
-%%%Optional: Smooth histogram before calculating local maxima
-acc = binsepsmoothiter(acc, 0.1, 5);
+%%%Optional: Smooth histogram before calculating local maxima 
+%%%haven't tested yet
+acc = binsepsmoothiter(acc, 0, 10);
 [Pos, Value, Anms] = locmax8(acc);
 
 % Delimit the number of responses if necessary
@@ -81,8 +94,10 @@ Pos = Pos(ind, :);
 maxline = min(length(Value), nlines);
 linepar = zeros(2, maxline);
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     %%% Compute the lines and plot %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Compute a line for each one of the strongest responses in the accumulator
-
 outcurves = zeros(2, maxline);
 for idx = 1 : maxline
     rho = rho_coor(Pos(idx, 1));

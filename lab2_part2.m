@@ -49,13 +49,14 @@ title('magnitude');
 
 threshold_list = [0.05, 0.1, 0.15];
 for j = 4:6
-    subplot(2, 3, j)
+    subplot(1, 3, j)
     threshold = threshold_list(j-3) * max(max(gradmagntools))
     showgrey((gradmagntools - threshold) > 0)
     title(['threshold = ', num2str(threshold)]);
 end
 
 %% sobel magnitude for godthem256, with smooth
+%smooth the gradient
 clc
 clear
 figure(23)

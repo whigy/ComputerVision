@@ -169,7 +169,7 @@ scale = [0.0001, 1.0, 4.0, 16.0 ,64.0];
 for i = 1 : length(scale)
     subplot(2, 3, i)
     pixels = Lvvtilde(discgaussfft(house, scale(i)), 'same');
-    contour(pixels); 
+    contour(pixels, [0 0]); 
     axis('image');
     axis('ij');
     title(['scale = ', num2str(scale(i))]);
@@ -198,25 +198,27 @@ house = few256;
 
 scale = [4, 16];
 for i = 1:length(scale)
-    subplot(length(scale), 3, (i-1)*3+1)
+    subplot(length(scale), 2, (i-1)*2+1)
     Lvvpixels = Lvvtilde(discgaussfft(house, scale(i)), 'same');
-    contour(Lvvpixels); 
+    contour(Lvvpixels, [0 0]); 
     axis('image');
     axis('ij');
     title(['2nd Deri. with scale = ', num2str(scale(i))]);
 
-    subplot(length(scale), 3, (i-1)*3+2)
+    %subplot(length(scale), 2, (i-1)*3+2)
     Lvvvpixels = Lvvvtilde(discgaussfft(house, scale(i)), 'same');
+    
     %A = Lvvpixels .* real(log(1 + Lvvpixels .* double(Lvvvpixels<0)));
-    A = Lvvpixels .* real(log(1 + Lvvpixels));
-    contour(A, [0 0]); 
-    axis('image');
-    axis('ij');
-    title(['Log Transform']);
+%     A = Lvvpixels .* real(log(1 + Lvvpixels));
+%     contour(A, [0 0]); 
+%     axis('image');
+%     axis('ij');
+%     title(['Log Transform']);
 
-    subplot(length(scale), 3, (i-1)*3+3)
-    A(Lvvvpixels > 0) = NaN;%100000000;
-    contour(A, [0 0]); 
+    subplot(length(scale), 2, (i-1)*2+2)
+    Lvvpixels(Lvvvpixels > 0) = NaN;
+    %A(Lvvvpixels >= 0) = NaN;%100000000;
+    contour(Lvvpixels, [0 0]); 
     axis('image');
     axis('ij');
     title(['2nd Deri. minus 3rd Deri >0']);
