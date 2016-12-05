@@ -14,8 +14,25 @@ I = imfilter(I, h);
 tic
 [ segm, centers ] = kmeans_segm(I, K, L, seed);
 toc
+
+figure(11)
+subplot(1,3,1)
+imagesc(I);
+title('Original Picture');
+axis off
+
+subplot(1,3,2)
 Inew = mean_segments(Iback, segm);
+imagesc(Inew);
+title(['Cluster = ', num2str(K), ' Iteration = ', num2str(L)]);
+axis off
+
+subplot(1,3,3)
 I = overlay_bounds(Iback, segm);
-imwrite(Inew,'result/kmeans1.png')
-imwrite(I,'result/kmeans2.png')
+imagesc(I);
+title('Overlay');
+axis off
+
+imwrite(Inew,'bildat_lab3/result/kmeans1.png')
+imwrite(I,'bildat_lab3/result/kmeans2.png')
 
