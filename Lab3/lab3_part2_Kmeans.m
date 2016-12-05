@@ -4,6 +4,37 @@ clc
 clear
 kmeans_example
 
+figure(11)
+image = imread('orange.jpg');
+image = im2double(image);
+% %Let X be a set of pixels and V be a set of K cluster centers in 3D (R,G,B).
+[m, n, d] = size(image);
+X = reshape(image, m * n, d);
+plot3( X(:, 1), X(:, 2), X(:, 3), 'y.');
+hold on
+plot3( centers(:, 1), centers(:, 2), centers(:, 3), 'b*');
+hold off
+title('centers')
+
+figure(12)
+subplot(1,3,1)
+imagesc(image);
+title('Original Picture');
+axis off
+
+subplot(1,3,2)
+Inew = mean_segments(Iback, segm);
+imagesc(Inew);
+title(['Cluster = ', num2str(K), ' Iteration = ', num2str(L)]);
+axis off
+
+subplot(1,3,3)
+I = overlay_bounds(Iback, segm);
+imagesc(I);
+title('Overlay');
+axis off
+
+
 %%
 clc
 clear
