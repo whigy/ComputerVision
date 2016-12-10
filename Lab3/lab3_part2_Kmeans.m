@@ -5,20 +5,24 @@ clear
 kmeans_example
 
 figure(11)
-image = imread('orange.jpg');
-image = im2double(image);
+img = imread('orange.jpg');
+image = im2double(img);
 % %Let X be a set of pixels and V be a set of K cluster centers in 3D (R,G,B).
 [m, n, d] = size(image);
-X = reshape(image, m * n, d);
-plot3( X(:, 1), X(:, 2), X(:, 3), 'y.');
-hold on
-plot3( centers(:, 1), centers(:, 2), centers(:, 3), 'b*');
+Ximg = reshape(image, m * n, d);
+Xsegm = reshape(segm, m * n, 1);
+for k = 1 : K
+    X = Ximg( Xsegm == k, :);
+    plot3( X(:, 1), X(:, 2), X(:, 3), '.');
+    hold on
+end
+plot3( centers(:, 1), centers(:, 2), centers(:, 3), 'k*', 'MarkerSize', 30);
 hold off
 title('centers')
 
 figure(12)
 subplot(1,3,1)
-imagesc(image);
+imagesc(img);
 title('Original Picture');
 axis off
 
