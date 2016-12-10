@@ -13,11 +13,14 @@ I = imfilter(I, h);
 
 tic
 figure(10)
-[ segm, centers ] = kmeans_segm(I, K, L, seed);
+% Pick K-means method
+%[ segm, centers ] = kmeans_segm(I, K, L, seed);
+[ segm, centers ] = kmeans_segm2(I, K, L, seed);
+%[ segm, centers ] = Copy_of_kmeans_segm(I, K, L, seed);
 title('error of centers');
 toc
+
 Inew = mean_segments(Iback, segm);
 I = overlay_bounds(Iback, segm);
-imwrite(Inew,'bildat_lab3/result/kmeans1.png')
-imwrite(I,'bildat_lab3/result/kmeans2.png')
-
+imwrite(Inew,'bildat_lab3/result/kmeans1Gabi.png')
+imwrite(I,'bildat_lab3/result/kmeans2Gabi.png')
