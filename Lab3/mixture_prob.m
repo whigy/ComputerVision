@@ -18,10 +18,14 @@ disp(['size after mask: ', num2str(n_mask)]);
 w = ones(1, K) /K;
 %ind = randperm(n_mask); % Another way of initialization of mu
 %mu = Imask( ind(1:K), :);
-[ foo, mu ] = kmeans_segm3(image, K, 25, 14, 0); % Initialize with K-means center, hopefully get a faster converge
-sigma = repmat( eye(3), 1, K);
-sigma = reshape(sigma, 3, 3, K);
-sigma = 0.04 * rand * sigma;
+[ segm, mu ] = kmeans_segm2(image, K, 25, 14, 0); % Initialize with K-means center, hopefully get a faster converge
+for k = 1 : K
+    w(k) = length(find(segm == k));
+end
+w = w ./ sum(w);
+%sigma = reshape(repmat( eye(3), 1, K), 3, 3, K) * 0.0005 * rand;
+sigma = eye(3) .* rand(3) * 0.005;
+sigma = reshape(repmat( sigma, 1, K), 3, 3, K);
 
 P = zeros( n_mask, K);
 
@@ -31,7 +35,6 @@ for l = 1 : L
     for k = 1 :K
         dif = bsxfun(@minus, Imask, mu(k, :)); %size(dif) = [n_mask , 3]
         cova = sigma( :, :,k);
-        
         g_k = (1 / sqrt((2 * pi)^3 * abs(det(cova)))) * exp ( -0.5 * sum(dif /cova .* dif,2)); % size(g_k) = [n_mask , 1]
         P(:, k) = w(k) * g_k;
     end
@@ -53,7 +56,6 @@ for l = 1 : L
 end
     
 %   Compute probabilities p(c_i) in Eq.(3) for all pixels I.
-
 P = zeros( m * n, K); 
 for k = 1 :K
     dif = bsxfun(@minus, I, mu(k, :));
@@ -62,7 +64,5 @@ for k = 1 :K
     g_k = 1 / sqrt( (2*pi)^3 * det(cova)) * exp ( -0.5 * sum(dif /cova .* dif,2));
     P(:, k) = w(k) * g_k;
 end
-prob = sum(P,2);
-prob = reshape(prob, m, n, 1);
+prob = reshape(sum(P,2), m, n, 1);
 end
-
