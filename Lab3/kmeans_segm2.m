@@ -1,4 +1,4 @@
-function [ segm, centers ] = kmeans_segm(image, K, L, seed, verbose)
+function [ segm, centers ] = kmeans_segm2(image, K, L, seed, verbose)
 
 if nargin < 5
     verbose = 1;
