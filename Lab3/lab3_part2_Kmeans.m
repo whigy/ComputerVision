@@ -26,7 +26,7 @@ title('centers')
 % Plot results
 figure(12)
 subplot(1,3,1)
-imagesc(img);
+imagesc(image);
 title('Original Picture');
 axis off
 
