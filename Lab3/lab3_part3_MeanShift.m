@@ -4,8 +4,10 @@ clc
 clear
 
 scale_factor = 0.5;                      % image downscale factor
-spatial_bandwidth = [4.0, 5.0, 7.0];   % spatial bandwidth
-colour_bandwidth = [4.0, 5.0, 7.0];    % colour bandwidth
+spatial_bandwidth = [3.0, 4.0, 6.0];     % spatial bandwidth
+colour_bandwidth = [3.0, 4.0, 6.0];      % colour bandwidth
+spatial_bandwidth = [3.0, 8.0, 13.0];     % spatial bandwidth
+colour_bandwidth = [3.0, 8.0, 13.0];      % colour bandwidth
 num_iterations = 40;                     % number of mean-shift iterations
 image_sigma = 1.0;                       % image preblurring scale
 images = {'orange.jpg', 'tiger1.jpg', 'tiger2.jpg', 'tiger3.jpg'};
@@ -26,7 +28,8 @@ for u = 1 : length(images)
             segm = mean_shift_segm(I, spatial_bandwidth(i), colour_bandwidth(j), num_iterations);
             Inew = mean_segments(Iback, segm);
             I = overlay_bounds(Iback, segm);
-            imshow(I)
+            %imshow(I)
+            imshow(Inew)
             title(['SpatialBandwidth = ', num2str(spatial_bandwidth(i)), ', ColorBandwidth = ', num2str(colour_bandwidth(j))]);
         end
     end
