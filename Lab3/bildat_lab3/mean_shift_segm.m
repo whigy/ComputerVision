@@ -3,12 +3,14 @@ function segm = mean_shift_segm(I, spatial_bandwidth, colour_bandwidth, num_iter
 tic
 fprintf('Find colour channels with K-means...\n');
 K = 16;
-[ segm, centers ] = kmeans_segm(I, K, 10, 4321);
+[ segm, centers ] = kmeans_segm2(I, K, 10, 4321);
 toc
 
 centers(isnan(centers)) = 0.0;
 %imshow(overlay_bounds(I, segm))
 %pause
+Inew = mean_segments(Iback, segm);
+imshow(Inew)
 
 [ height, width, depth ] = size(I);
 idx = reshape(segm, [height, width]);
@@ -17,14 +19,17 @@ mapx = zeros(height, width, K, 'single');
 mapy = zeros(height, width, K, 'single');
 [X, Y] = meshgrid(1:width, 1: height);
 for k = 1:K
-    maps(:,:,k) = (idx == k);
-    mapx(:,:,k) = maps(:,:,k).*X;
-    mapy(:,:,k) = maps(:,:,k).*Y; 
+    maps(:,:,k) = (idx == k); % find where cluster =k
+    mapx(:,:,k) = maps(:,:,k).*X; % find Index x?
+    mapy(:,:,k) = maps(:,:,k).*Y; % find Index y?
 end
 s = 2*ceil(1.5*spatial_bandwidth) + 1;
 h = fspecial('gaussian', [s s], spatial_bandwidth);
-mapsw = reshape(imfilter(maps, h), [width*height,K]) + 1e-6;
-mapsx = reshape(imfilter(mapx, h), [width*height,K]);
+mapsw = reshape(imfilter(maps, h), [width*height,K]) + 1e-6; %blur and reshape
+%imshow(maps(:,:,1))
+%sss = imfilter(maps, h);
+%imshow(sss(:,:,1))
+mapsx = reshape(imfilter(mapx, h), [width*height,K]); % What's the difference between x and y?
 mapsy = reshape(imfilter(mapy, h), [width*height,K]);
 toc
 

@@ -1,4 +1,4 @@
-function [ segm, centers ] = kmeans_segm(image, K, L, seed, verbose)
+function [ segm, centers ] = kmeans_segm3(image, K, L, seed, verbose)
 
 if nargin < 5
     verbose = 1;
@@ -26,6 +26,7 @@ for l = 1 : L % Iterate L times
     end
     if verbose == 1
         plot(l, norm(V_temp - V), 'bo');
+        disp(['L = ', num2str(l), ' Change of center:', num2str(norm(V_temp - V))]);
         hold on
     end
     D = pdist2(X, V,'euclidean');
