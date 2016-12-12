@@ -1,16 +1,19 @@
 function segm = mean_shift_segm(I, spatial_bandwidth, colour_bandwidth, num_iterations)
 
+I = im2double(I);
+
 tic
 fprintf('Find colour channels with K-means...\n');
 K = 16;
-[ segm, centers ] = kmeans_segm2(I, K, 10, 4321);
+L = 20;
+[ segm, centers ] = kmeans_segm2(I, K, L, 4321);
 toc
 
 centers(isnan(centers)) = 0.0;
 %imshow(overlay_bounds(I, segm))
 %pause
-Inew = mean_segments(Iback, segm);
-imshow(Inew)
+%Inew = mean_segments(Iback, segm);
+%imshow(Inew)
 
 [ height, width, depth ] = size(I);
 idx = reshape(segm, [height, width]);
