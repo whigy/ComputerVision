@@ -45,3 +45,8 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.png
+Lab3/bildat_lab3/result/kmeans1.png
+Lab3/bildat_lab3/result/kmeans2.png
+*.asv
+Lab3/bildat_lab3/result/kmeans2.png
