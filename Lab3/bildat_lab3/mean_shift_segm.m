@@ -6,7 +6,7 @@ tic
 fprintf('Find colour channels with K-means...\n');
 K = 16;
 L = 20;
-[ segm, centers ] = kmeans_segm2(I, K, L, 4321);
+[ segm, centers ] = kmeans_segm2(I, K, L, 4321, 0);
 toc
 
 centers(isnan(centers)) = 0.0;

@@ -27,6 +27,7 @@ for l = 1 : L % Iterate L times
     end
     if verbose == 1
         plot(l, norm(V_temp - V), 'bo');
+        disp(['L = ', num2str(l), ' Change of center:', num2str(norm(V_temp - V))]);
         hold on
     end
     D = pdist2(X, V,'euclidean');
