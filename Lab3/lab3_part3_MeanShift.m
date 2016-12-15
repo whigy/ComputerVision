@@ -28,8 +28,8 @@ for u = 1 : length(images)
             segm = mean_shift_segm(I, spatial_bandwidth(i), colour_bandwidth(j), num_iterations);
             Inew = mean_segments(Iback, segm);
             I = overlay_bounds(Iback, segm);
-            imshow(I)
-            %imshow(Inew)
+            %imshow(I)
+            imshow(Inew)
             title(['SpatialBandwidth = ', num2str(spatial_bandwidth(i)), ', ColorBandwidth = ', num2str(colour_bandwidth(j))]);
         end
     end

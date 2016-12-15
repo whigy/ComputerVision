@@ -34,5 +34,5 @@ d = diag(D);
 k = sum(d(x > 0)) / sum(d);
 b = k / (1 - k);
 y = (1 + x) - b * (1 - x);
-ncut = (y' * (D - W) * y) / ( y' * D * y );
+ncut = (y' * (D - W) * y) / ( y' * D * y );% eigenvalue
 end
