@@ -16,6 +16,11 @@ I = imfilter(I, h);
 segm = norm_cuts_segm(I, colour_bandwidth, radius, ncuts_thresh, min_area, max_depth);
 Inew = mean_segments(Iback, segm);
 I = overlay_bounds(Iback, segm);
-imwrite(Inew,'result/normcuts1.png')
-imwrite(I,'result/normcuts2.png')
+figure(100)
+subplot(1,2,1)
+imshow(Inew)
+subplot(1,2,2)
+imshow(I)
+imwrite(Inew,'bildat_lab3/result/normcuts1.png')
+imwrite(I,'bildat_lab3/result/normcuts2.png')
 
